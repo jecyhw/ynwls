@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+uploadDir上传目录
+uploadTempDir上传的临时目录
+zipFileDir压缩目录
+unZipFileDir解压目录
+kmzVirtualPath mkz解压文件在tomcat中设置的虚拟目录
+默认uploadTempDir,zipFileDir,unZipFileDir等于uploadDir的值
+-->
+<config
+        uploadDir="/var/gpstracks/"
+        uploadTempDir="/var/gpstracks/"
+        zipFileDir="/var/gpstracks/"
+        unZipFileDir="/var/gpstracks/"
+        kmzVirtualPath="/"/>

@@ -1,0 +1,36 @@
+.navbar {
+    height: 52px;
+}
+.navbar-header {
+    float: left;
+}
+
+.navbar-form .form-group {
+    display: inline-block;
+    margin-bottom: 0px;
+    vertical-align: middle;
+}
+
+.navbar-right {
+    float: right !important;
+    margin-right: -15px;
+}
+
+.navbar-form {
+    width: auto;
+    border: 0px none;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    box-shadow: none;
+}
+
+.navbar-container {
+    width: 800px;
+    background-color: #F8F8F8;
+    height: 52px;
+    border-bottom: 1px solid #E7E7E7;
+    border-top: 1px solid #E7E7E7;
+    margin-top: -1px;
+}

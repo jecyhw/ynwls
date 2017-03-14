@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>test.jsp</welcome-file>
+    </welcome-file-list>
+    
+    <filter>
+        <filter-name>SetCharacterEncodingFilter</filter-name>
+        <filter-class>com.cn.filter.SetCharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>SetCharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <session-config>
+        <session-timeout>20</session-timeout>
+    </session-config>
+    <filter>
+        <filter-name>SessionTimeOutFilter</filter-name>
+        <filter-class>com.cn.filter.SessionTimeOutFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SessionTimeOutFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+        <url-pattern>*.do</url-pattern>
+        <url-pattern>/showRTUserPosition.html</url-pattern>
+    </filter-mapping>
+
+
+
+    <servlet>
+        <servlet-name>CheckFileExistServlet</servlet-name>
+        <servlet-class>com.cn.action.CheckFileExistServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CheckFileExistServlet</servlet-name>
+        <url-pattern>/CheckFileExist.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DownloadFileServlet</servlet-name>
+        <servlet-class>com.cn.action.DownloadFileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DownloadFileServlet</servlet-name>
+        <url-pattern>/DownloadFile.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ExportRecordServlet</servlet-name>
+        <servlet-class>com.cn.action.ExportRecordServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ExportRecordServlet</servlet-name>
+        <url-pattern>/ExportRecord.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>QueryRecordServlet</servlet-name>
+        <servlet-class>com.cn.action.QueryRecordServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>QueryRecordServlet</servlet-name>
+        <url-pattern>/QueryRecord.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>QueryUserHistoryServlet</servlet-name>
+        <servlet-class>com.cn.action.QueryUserHistoryServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>QueryUserHistoryServlet</servlet-name>
+        <url-pattern>/QueryUserHistory.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>QueryUserNameServlet</servlet-name>
+        <servlet-class>com.cn.action.QueryUserNameServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>QueryUserNameServlet</servlet-name>
+        <url-pattern>/QueryUserName.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>QueryUserPositionServlet</servlet-name>
+        <servlet-class>com.cn.action.QueryUserPositionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>QueryUserPositionServlet</servlet-name>
+        <url-pattern>/QueryUserPosition.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RouteRecordMapInfoServlet</servlet-name>
+        <servlet-class>com.cn.action.RouteRecordMapInfoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RouteRecordMapInfoServlet</servlet-name>
+        <url-pattern>/RouteRecordMapInfo.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SaveRecordServlet</servlet-name>
+        <servlet-class>com.cn.action.SaveRecordServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SaveRecordServlet</servlet-name>
+        <url-pattern>/SaveRecord.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ImageServlet</servlet-name>
+        <servlet-class>com.cn.action.ImageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ImageServlet</servlet-name>
+        <url-pattern>/Image.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UploadFileServlet</servlet-name>
+        <servlet-class>com.cn.action.UploadFileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UploadFileServlet</servlet-name>
+        <url-pattern>/UploadFile.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserLoginServlet</servlet-name>
+        <servlet-class>com.cn.action.UserLoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserLoginServlet</servlet-name>
+        <url-pattern>/UserLoginServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserLogOutServlet</servlet-name>
+        <servlet-class>com.cn.action.UserLogOutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserLogOutServlet</servlet-name>
+        <url-pattern>/UserLogOutServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ViewSingleRouteRecordInfoServlet</servlet-name>
+        <servlet-class>com.cn.action.ViewSingleRouteRecordInfoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ViewSingleRouteRecordInfoServlet</servlet-name>
+        <url-pattern>/ViewSingleRouteRecordInfo.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CheckEmailService</servlet-name>
+        <servlet-class>com.cn.service.CheckEmailService</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CheckEmailService</servlet-name>
+        <url-pattern>/CheckEmail</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CheckUserService</servlet-name>
+        <servlet-class>com.cn.service.CheckUserService</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CheckUserService</servlet-name>
+        <url-pattern>/CheckUserExist</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DownloadFileService</servlet-name>
+        <servlet-class>com.cn.service.DownloadFileService</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DownloadFileService</servlet-name>
+        <url-pattern>/DownloadFile</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>QueryRecordService</servlet-name>
+        <servlet-class>com.cn.service.QueryRecordService</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>QueryRecordService</servlet-name>
+        <url-pattern>/QueryRecord</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RegisterService</servlet-name>
+        <servlet-class>com.cn.service.RegisterService</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterService</servlet-name>
+        <url-pattern>/Register</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>TRtGPSPointService</servlet-name>
+        <servlet-class>com.cn.service.TRtGPSPointService</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TRtGPSPointService</servlet-name>
+        <url-pattern>/TRtGPSPointAdd</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UploadFileService</servlet-name>
+        <servlet-class>com.cn.service.UploadFileService</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UploadFileService</servlet-name>
+        <url-pattern>/UploadFile</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserHistoryService</servlet-name>
+        <servlet-class>com.cn.service.UserHistoryService</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserHistoryService</servlet-name>
+        <url-pattern>/UserHistoryQuery</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserRealTimePositionServlet</servlet-name>
+        <servlet-class>com.cn.service.UserRealTimePositionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserRealTimePositionServlet</servlet-name>
+        <url-pattern>/UserRTPositionQuery</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <description>服务器重启未解压成功的文件重新解压</description>
+        <display-name>autoRunWhenTomcatRestart</display-name>
+        <servlet-name>AutoRunServlet</servlet-name>
+        <servlet-class>com.cn.action.AutoRunServlet</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AutoRunServlet</servlet-name>
+        <url-pattern>/AutoRunServlet</url-pattern>
+    </servlet-mapping>
+</web-app>

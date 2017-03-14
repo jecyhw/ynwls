@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <title>注册</title>
+    <link rel="stylesheet" type="text/css" href="../js/jquery-ui/jquery-ui.css" />
+    <link href="../js/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui/i18n/jquery.ui.datepicker-zh-CN.js"></script>
+    <script src="../js/bootstrap/js/tooltip.js"></script>
+    <script type="text/javascript" src="../js/all.js"></script>
+    <script type="text/javascript" src="../js/address.js"></script>
+    <style>
+        #wizard {
+            border: 1px solid #dddddd;
+            margin: 20px auto;
+            border-radius: 5px;
+            padding-bottom: 50px;
+        }
+
+        #wizard #status {
+            height: 35px;
+            list-style: none outside none;
+            background: none repeat scroll 0% 0% #123 ;
+        }
+
+        #wizard #status li {
+            float: left;
+            color: #fff;
+            padding: 10px 30px;
+        }
+
+        #wizard #status li.active {
+            background-color: #336699;
+            font-weight: normal;
+        }
+
+        .page {
+            margin: 20px 35px;
+            width: 500px;
+            display: none;
+            clear: both;
+        }
+
+        .page.in {
+            display: block;
+        }
+
+        .page h3 {
+            height: 42px;
+            font-size: 16px;
+            border-bottom: 1px dotted #cccccc;
+            margin-bottom:20px;
+            padding-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .page h3 em {
+            font-size: 12px;
+            font-weight: 500;
+            font-style: normal;
+        }
+    </style>
+</head>
+<body>
+<link href="../css/ie8.css" rel="stylesheet" media="screen">
+<div class="navbar navbar-default">
+    <div class="container navbar-container">
+        <div class="navbar-header">
+            <a class="navbar-brand"><strong>Web端轨迹管理系统</strong></a>
+        </div>
+
+        <form class="navbar-form navbar-right" role="search">
+            <a type="button" class="btn btn-primary" href="../index.html">返回到登陆</a>
+        </form>
+    </div>
+</div>
+<div>
+    <form class="container" style="width: 600px;">
+        <div class="" id="wizard">
+            <ul id="status">
+                <li class="active"><strong>1.</strong>创建账户</li>
+                <li class=""><strong>2.</strong>填写详细信息</li>
+                <li class=""><strong>3.</strong>完成</li>
+            </ul>
+
+            <div class="items">
+                <div class="page in">
+                    <h3>创建一个账户<br><em>请填写您的注册账户信息，用于登录。</em></h3>
+                    <div class="form-group">
+                        <label for="account">用户名</label><span  class="text-danger">(必填项)</span>
+                        <input type="text" class="form-control" name="account" id="account" data-required data-msg="用户名不能为空">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">邮箱</label><span  class="text-danger">(必填项)</span>
+                        <input type="text" class="form-control" name="email" id="email" data-required="^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$" data-msg="邮箱格式不正确">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">密码</label><span  class="text-danger">(必填项)</span>
+                        <input type="password" class="form-control" name="password" id="password" data-required data-msg="密码不能为空">
+                    </div>
+                    <div class="form-group">
+                        <label for="checkPassword">确认密码</label><span  class="text-danger">(必填项)</span>
+                        <input type="password" class="form-control" id="checkPassword" data-required data-msg="确认密码不能为空">
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" style="float: right" data-direction="1">下一步&gt&gt</button>
+                    </div>
+                </div>
+                <div class="page">
+                    <h3>填写个人信息<br><em>请告诉我们您的一些个人信息。</em></h3>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <label for="name">姓名:</label> <span  class="text-danger">(必填项)</span>
+                                <input type="text" class="form-control" name="name" id="name" data-required data-msg="姓名不能为空">
+                            </div>
+                            <div class="form-group">
+                                <label for="gender">性别:</label>
+                                <select class="form-control" name="gender" id="gender">
+                                    <option value="0">保密</option>
+                                    <option value="1">男</option>
+                                    <option value="2">女</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="birthday">出生日期:</label> <span  class="text-danger">(必填项)</span>
+                                <input type="text" class="form-control" name="birthday" id="birthday" data-msg="日期格式不正确" data-required="^\d{4}-\d{2}-\d{2}$">
+                            </div>
+                            <div class="form-group">
+                                <label for="organization">工作单位:</label> <span  class="text-danger">(必填项)</span>
+                                <input type="text" class="form-control" name="organization" id="organization" data-required data-msg="工作单位不能为空">
+                            </div>
+                        </div>
+                        <div  class="col-xs-6">
+                            <div class="form-group">
+                                <label for="province">省:</label>
+                                <select class="form-control" name="province" id="province">
+
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="city">市:</label>
+                                <select class="form-control" name="city" id="city">
+
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="county">区:</label>
+                                <select class="form-control" name="county" id="county">
+
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="township">乡镇:</label> <span  class="text-danger">(必填项)</span>
+                                <input type="text" class="form-control" name="township" id="township" data-required data-msg="乡镇不能为空">
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" style="float: left" data-direction="-1">&lt&lt上一步</button>
+                        <button type="button" class="btn btn-primary" style="float: right" data-direction="1">下一步&gt&gt</button>
+                    </div>
+                </div>
+                <div class="page">
+                    <h3>完成注册<br><em>点击确定完成注册。</em></h3>
+                    <div class="form-group">
+                        <label><span class=""></span>欢迎您！</label>
+                        <p>请点击“确定”按钮完成注册。</p>
+                    </div>
+                    <div class="alert alert-success hide" role="alert">
+                        <strong>注册成功！</strong><a href="../index.html">5秒后自动转到登陆页</a>
+                    </div>
+                    <div class="alert alert-danger hide" role="alert">
+                        <strong>注册失败！</strong>请稍后重新注册
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" style="float: left" data-direction="-1">&lt&lt上一步</button>
+                        <button type="button" class="btn btn-primary" style="float: right">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        var $li = $("#wizard #status li"),
+                li_index = 0,
+                $page = $(".items .page"),
+                userExist = -1;
+
+        function checkUser(val, callback) {
+            $.ajax({
+                type: "post",
+                url: web_prefix + "/CheckUserExist",
+                dataType: "json",
+                data: {
+                    "account": val
+                },
+                success: function (data) {
+                    callback(data);
+                }
+            });
+        }
+
+        var $account =  $("#account");
+        $account.blur(function () {//验证用户名是否存在
+            userExist = -1;
+            var val = $account.val();
+            if (val) {
+               checkUser(val, function(data) {
+                   if (data.status != 0) {
+                       tooltipShow($account, 2000, "该用户名已存在,请重新填写用户名");
+                       userExist = 1;
+                   } else {
+                       userExist = 0;
+                   }
+               });
+            }
+        });
+
+        $("button").click(function() {
+            var $this = $(this),
+                    dir = $this.attr("data-direction");
+            if (dir) {
+                var pass = true;
+                if (dir == "1") {//跳转至下一步骤，需要先进行验证
+                    $page.eq(li_index).find("input[data-required]").each(function () {//验证填写是否符合要求
+                        var $this = $(this),
+                                s = $this.attr("data-required"),
+                                val = $this.val();
+                        if (!s) {
+                            if (!val && val.length == 0) {
+                                pass = false;
+                            }
+                        } else {
+                            var regex = new RegExp(s);
+                            if (!regex.test(val)) {
+                                pass = false;
+                            }
+                        }
+                        if (!pass) {
+                            tooltipShow($this, 2000, $this.attr("data-msg"));
+                            return false;
+                        }
+                    });
+
+                    if (pass) {//继续验证
+                        if (li_index == 0) {
+                            var $check = $("#checkPassword");//检查密码是否一致
+                            if (userExist == 1) {
+                                tooltipShow($account, 2000, "该用户名已存在,请重新填写用户名");
+                                pass = false;
+                            }
+                            if (pass) {
+                                if ($("#password").val() != $check.val()) {
+                                    tooltipShow($check, 2000, "密码不一致,请重新确认密码");
+                                    pass = false;
+                                }
+                            }
+
+                            if (pass) {//继续验证用户名
+                                pass = false;//先设置pass等于false
+                                if (userExist == -1) {//验证用户名是否存在(第一次验证)
+                                    $this.addClass("disabled");//按钮失效
+                                    checkUser($account.val(), function (data) {
+                                        if (data.status != 0) {
+                                            tooltipShow($account, 2000, "该用户名已存在,请重新填写用户名");
+                                            userExist = 1;
+                                        } else {
+                                            userExist = 0;
+                                            $li.eq(li_index).removeClass("active");
+                                            $page.eq(li_index).removeClass("in");
+                                            li_index += parseInt(dir);
+                                            $li.eq(li_index).addClass("active");
+                                            $page.eq(li_index).addClass("in");
+                                        }
+                                        $this.removeClass("disabled");
+                                    });
+                                } else if (userExist == 1) {//用户名已验证,且用户已存在
+                                    tooltipShow($account, 2000, "该用户名已存在,请重新填写用户名");
+                                } else {
+                                    pass = true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (!pass) {//验证不通过
+                    return;
+                }
+                $li.eq(li_index).removeClass("active");
+                $page.eq(li_index).removeClass("in");
+                li_index += parseInt(dir);
+                $li.eq(li_index).addClass("active");
+                $page.eq(li_index).addClass("in");
+            } else {//完成注册
+                var index = li_index;
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: web_prefix + "/Register",
+                    data: $("form").serializeArray(),
+                    success: function (data) {
+                        if (data.status == 0) {
+                            setTimeout(function () {
+                                window.location.href = "../index.html";
+                            }, 5000);
+                            $page.eq(index).find(".alert-success").removeClass("hide");
+                            $page.eq(index).find("button").addClass("disabled");
+                        } else {
+                            $page.eq(index).find(".alert-danger").removeClass("hide");
+                            setTimeout(function () {
+                                $page.eq(index).find(".alert-danger").addClass("hide");
+                            }, 5000);
+                        }
+                    },
+                    error: function () {
+                        $page.eq(index).find(".alert-danger").removeClass("hide");
+                        setTimeout(function () {
+                            $page.eq(index).find(".alert-danger").addClass("hide");
+                        }, 5000);
+                    }
+                })
+            }
+        }).keyup(function() {
+            if (e.keyCode == 13) {
+                $(this).click();
+            }
+        });
+
+        //省市区级联
+        var pccs=new province_city_county_select();
+        pccs.init();
+
+        $("#birthday").datepicker(
+                $.extend($.datepicker.regional['zh-CN'],{
+                    dateFormat:"yy-mm-dd",
+                    maxDate: new Date(),
+                    showButtonPanel: true
+                })
+        );
+    });
+</script>
+</html>

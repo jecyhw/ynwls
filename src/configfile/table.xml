@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+user用户表表名
+tracks轨迹信息表表名
+tracks_points轨迹记录的gps表表名
+rt_gpspoints用户所有实时位置表表名
+rt_gpspoint_new用户最新实时位置表表名
+-->
+<table
+        user="t_ynwls_user"
+        tracks="t_tracks"
+        tracks_points="t_tracks_points"
+        rt_gpspoints="t_rt_gpspoints"
+        rt_gpspoint_new="t_rt_gpspoint_new"
+        />
