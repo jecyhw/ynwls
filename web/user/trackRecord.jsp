@@ -37,8 +37,8 @@
     <script type="text/javascript" src="../js/fancybox/jquery.mousewheel-3.0.6.pack.js"></script>
     <script type="text/javascript" src="../js/fancybox/jquery.fancybox.js"></script>
     <script type="text/javascript" src="../js/fancybox/helpers/jquery.fancybox-buttons.js"></script>
-
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=QT9ntk6IBtEHGSy4BG7zOXoU"></script>
+    <script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp&libraries=convertor&key=IMZBZ-S7VRW-NXERI-RLSJY-HHHCT-MBFI4"></script>
+    <script type="text/javascript" src="../js/coordtransform.js"></script>
     <script type="text/javascript" src="../js/all.js"></script>
     <script type="text/javascript" src="../js/gps_bd.js"></script>
     <script type="text/javascript" src="../js/jmap.js"></script>

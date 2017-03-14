@@ -29,7 +29,7 @@ public class AutoRunServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         TestOutput.println("AutoRunServlet start");
-        EnumerationKMZFiles(new File(Config.getUploadDir()));
+        //EnumerationKMZFiles(new File(Config.getUploadDir()));
         TestOutput.println("AutoRunServlet end");
     }
 

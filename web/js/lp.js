@@ -119,7 +119,7 @@ var rt = {
     add: function (inf, bd) {
         var t = new Rtol(bd, inf);
         rt.mk[inf.i] = t;
-        mp.addOverlay(t);//添加到地图
+        t.setMap(mp);//添加到地图
         tooltipShow($(".online"), 2000, inf.t.replace(/\d{4}-\d{2}-\d{2} /, "") + " " + inf.n + "上线了", {
             placement: "right"
         });
@@ -177,15 +177,23 @@ var rt = {
         for (var i in rt.mk) {
             bd.push(rt.mk[i].point);
         }
-        if (bd.length > 0) {
-            mp.setViewport(bd);
-        }
+        setViewport(bd);
     },
     online: function (c) {
         rt.olc += c;
         $(".online").html(rt.olc);
     }
 };
+
+function setViewport(bd) {
+    if (bd.length > 0) {
+        var bounds = new qq.maps.LatLngBounds(bd[0], bd[0]);
+        for (var i = 1; i < bd.length; ++i) {
+            bounds.extend(bd[i]);
+        }
+        mp.fitBounds(bounds);
+    }
+}
 
 var us = {};
 /**
@@ -248,7 +256,7 @@ us.inf = function(urt){
      * @returns {string}
      */
     this.ts = function () {
-        return this.j + "," + this.w;
+        return new qq.maps.LatLng(this.w, this.j);
     };
     /**
      * 和当前时间比较,判断差是否大于5分钟
@@ -419,7 +427,7 @@ function upi($btn, name) {
                             bds.push(mk.point);
                         }
                     }
-                    mp.setViewport(bds);
+                    setViewport(bds);
                 });
 
                 tooltipShow($btn, 2000, "查找到" + bds.length + "个用户信息");
@@ -453,39 +461,44 @@ function uhi($btn, name) {
                     (function(uhis) {
                         var gps = [];
                         $.each(uhis.history, function(_index, his) {
-                            gps.push(his.longitude + "," + his.latitude);
+                            gps.push(new qq.maps.LatLng(his.latitude, his.longitude));
                         });
                         gps2bd(gps, function (bds) {
                             if (bds) {
                                 var options = {}, uid = uhis.uid;
                                 options.strokeColor = rt.mk[uid] ? rt.mk[uid].inf.c : rt.getci();
-                                rt.py.push(new BMap.Polyline(bds, lineStyle(options)));
+                                options.path = bds;
+                                rt.py.push(new qq.maps.Polyline(lineStyle(options)));
                                 bdArr = bdArr.concat(bds);
                                 sc++;
                             }
                             rc++;
                             if (rc == uh.length) {//全部解析完
                                 for (var i = bdArr.length - 1; i >= 0; i--) {
-                                    var maker = new BMap.Marker(bdArr[i]);
+                                    var marker = new qq.maps.Marker({position: bdArr[i]});
                                     (function (his){
-                                        var infoWindow = new BMap.InfoWindow( '<table class="table table-bordered table-hover table-condensed table-striped" style="margin-bottom: 0px;">'+
+                                        var infoWindow = new qq.maps.InfoWindow({
+                                            content: '<table class="table table-bordered table-hover table-condensed table-striped" style="margin-bottom: 0px;">'+
                                             '<tbody>'+
                                             '<tr><td>经度:</td><td><span class="j">' + his.longitude + '</span></td></tr>'+
                                             '<tr><td>纬度:</td><td><span class="w">' + his.latitude + '</span></td></tr>'+
                                             '<tr><td>海拔:</td><td><span class="h">' + his.altitude + '</span></td></tr>'+
                                             '<tr><td>时间:</td><td><span class="t">' + his.time + '</span></td></tr>'+
                                             '</tbody>'+
-                                            '</table>');  // 创建信息窗口对象
-                                        maker.addEventListener("click", function () {
-                                            this.openInfoWindow(infoWindow);
+                                            '</table>',
+                                            position: marker,
+                                            map: mp
+                                        });  // 创建信息窗口对象
+                                        qq.maps.event.addListener(marker, "click", function () {
+                                            infoWindow.open();
                                         });
                                     })(uhis.history[i]);
-                                    rt.py.push(maker);
+                                    rt.py.push(marker);
                                 }
                                 for (var i = rt.py.length - 1; i >= 0; i--) {
-                                    mp.addOverlay(rt.py[i]);
+                                    rt.py[i].setMap(mp);
                                 }
-                                mp.setViewport(bdArr);
+                                setViewport(bdArr);
                                 if ($btn) {
                                     tooltipShow($btn, 2000, "查找到" + sc + "个用户信息");
                                 }
@@ -503,20 +516,7 @@ function uhi($btn, name) {
  */
 function c_uhi() {
     for (var i = rt.py.length - 1; i >= 0; i--) {
-        mp.removeOverlay(rt.py[i]);
+        rt.py[i].setMap(null);
     }
     rt.py = [];
-}
-
-
-//生成折线的起点终点覆盖物
-function marker(point, x, y) {//x,y表示图片偏移
-    var marker = new BMap.Marker(point,
-        {
-            icon: new BMap.Icon("../image/baidu/markers.png", size,
-                {
-                    imageOffset: new BMap.Size(x, y)
-                })
-        });
-    return marker;
 }

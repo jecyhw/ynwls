@@ -16,14 +16,3 @@ password密码-->
     <!--param数据库连接的配置参数-->
     <param zeroDateTimeBehavior="convertToNull" allowMultiQueries="true" characterEncoding="utf-8" autoReconnect="true"/>
 </jdbc>
-<!--
-<jdbc driver="com.mysql.jdbc.Driver"
-      protocol="jdbc:mysql://"
-      hostname=""
-      port=""
-      database=""
-      username=""
-      password="">
-    &lt;!&ndash;param数据库连接的配置参数&ndash;&gt;
-    <param zeroDateTimeBehavior="convertToNull" allowMultiQueries="true" characterEncoding="utf-8" autoReconnect="true"/>
-</jdbc>-->

@@ -4,11 +4,11 @@
 function Rtol(point, inf) {
     this.point = point;
     this.inf = inf;
+    qq.maps.Overlay.call(this, point, inf);
 }
 
-Rtol.prototype = new BMap.Overlay();
-Rtol.prototype.initialize = function (map) {
-    this.map = map;
+Rtol.prototype = new qq.maps.Overlay();
+Rtol.prototype.construct = function () {
     var it = this,
         option = Rtol.DEFAULTS,
         $div = $(option.template),
@@ -18,7 +18,7 @@ Rtol.prototype.initialize = function (map) {
         div = it.div = $div[0];
 
     $div.css({
-        "z-index": BMap.Overlay.getZIndex(it.point.lat),
+        //"z-index": BMap.Overlay.getZIndex(it.point.lat),
         "white-space": "nowrap"
     });
 
@@ -45,7 +45,7 @@ Rtol.prototype.initialize = function (map) {
             });
         }).click(function () {
             var $pop;
-            if (infoWindow.update(it.inf)) {
+            if (infoWindow.update(it)) {
                 $pop = infoWindow.pop;
                 $pop.show();
             } else {
@@ -69,7 +69,7 @@ Rtol.prototype.initialize = function (map) {
                 x: parseInt($pop.css("left")) + it.pop.width,
                 y: parseInt($pop.css("top"))
             };
-            var mne = mp.pointToOverlayPixel(mapB.getNorthEast());
+            var mne = it.getProjection().fromLatLngToContainerPixel(mapB.getNorthEast());
             var dx = mne.x - ne.x - 20,
                 dy = mne.y - ne.y + 10;
             if (dx >= 0) {
@@ -84,7 +84,7 @@ Rtol.prototype.initialize = function (map) {
                     x: parseInt( $div.css("left")),
                     y: parseInt($pop.css("top")) + it.pop.height
                 };
-                var msw = mp.pointToOverlayPixel(mapB.getSouthWest());
+                var msw = it.getProjection().fromLatLngToContainerPixel(mapB.getSouthWest());
                 dy = msw.y -sw.y - 10;
                 if (dy >= 0) {
                     dy = 0;
@@ -93,7 +93,7 @@ Rtol.prototype.initialize = function (map) {
             mp.panBy(dx, dy);
         });
 
-    mp.getPanes().labelPane.appendChild(div);
+    this.getPanes().overlayMouseTarget.appendChild(div);
     div.height = $div.outerHeight();
     div.width = $div.outerWidth();
     return div;
@@ -101,8 +101,7 @@ Rtol.prototype.initialize = function (map) {
 
 Rtol.prototype.draw = function () {
     var it = this,
-        map = it.map,
-        pixel = map.pointToOverlayPixel(it.point),
+        pixel = it.getProjection().fromLatLngToDivPixel(it.point),
         $div = $(it.div),
         option = Rtol.DEFAULTS;
     $div.css({
@@ -117,6 +116,12 @@ Rtol.prototype.draw = function () {
     }
 };
 
+Rtol.prototype.destroy = function() {
+    //移除dom
+    this.div.parentNode.removeChild(this.div);
+    this.div = null;
+};
+
 Rtol.prototype.update = function (point, inf) {
     this.point = point;
     this.inf = inf;
@@ -125,17 +130,22 @@ Rtol.prototype.update = function (point, inf) {
 };
 
 Rtol.prototype.highlight = function () {
-    var $inner = $(this.div).find(".tooltip-inner"),
+    var it = this;
+    var $inner = $(it.div).find(".tooltip-inner"),
         fc = ["#000000", "#FFFFFF"],
         fci = 0;
-    this.oldColor = $inner.css("color");
-    if (this.oldColor != fc[fci]) {
+    it.oldColor = $inner.css("color");
+    if (it.oldColor != fc[fci]) {
         fci = 1;
     }
-    this.timer = setInterval(function () {
+    it.timer = setInterval(function () {
         $inner.css("color", fc[fci]);
         fci = 1 - fci;
     }, 500);
+
+    setTimeout(function () {
+        it.unHighlight();
+    }, 5000)
 };
 
 Rtol.prototype.on = function (type, fn) {
@@ -165,11 +175,11 @@ function getColor(bg) {
 }
 
 var infoWindow = {
-    update: function (inf) {
+    update: function (overlay) {
         var pop = infoWindow.pop;
         if (!pop) {
             pop = infoWindow.pop = $(infoWindow.DEFAULTS.template);
-            mp.getPanes().labelPane.appendChild(pop[0]);
+            overlay.getPanes().floatPane.appendChild(pop[0]);
             pop.find('button').on("click", function() {
                 pop.hide();
             });
@@ -179,7 +189,8 @@ var infoWindow = {
             });
         }
 
-        if (inf != infoWindow.inf) {
+        if (overlay.inf != infoWindow.inf) {
+            var inf = overlay.inf;
             pop.find(".name").html(inf.n);
             pop.find(".j").html(inf.j);
             pop.find(".w").html(inf.w);
@@ -194,7 +205,7 @@ var infoWindow = {
 
 
 infoWindow.DEFAULTS = {
-    template: '<div class="popover fade right in" >'+
+    template: '<div class="popover fade right in">'+
     '<div class="arrow"></div>'+
     '<div class="popover-title">用户信息'+
     '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
@@ -215,16 +226,3 @@ infoWindow.DEFAULTS = {
     '</div>'+
     '</div>'
 };
-
-/*// 百度地图API功能
- var mp = new BMap.Map("map");
- mp.centerAndZoom(new BMap.Point(116.3964,39.9093), 15);
- mp.enableScrollWheelZoom();
-
- var myCompOverlay = new Rtol(new BMap.Point(116.407845,39.914101), {n: "银湖海岸城",t: "2015-5-15 10:23:12", c: "#00ff00", j: "jingdu", w: "weidu", h:"haiba"
- });
- var myCompOverlay1 = new Rtol(new BMap.Point(116.407845,39.911), {n: "银湖海岸城",t: "2015-5-15 10:23:12", c: "#00ff00", j: "jingdu", w: "weidu", h:"haiba"
- });
-
- mp.addOverlay(myCompOverlay);
- mp.addOverlay(myCompOverlay1);*/

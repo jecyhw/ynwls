@@ -7,6 +7,15 @@ $(document).ready(function () {
     mp = createMap('map');
     locateByIp(mp);
 
+    var proj;
+    (function () {
+        var overlay = new qq.maps.Overlay();
+        overlay.draw = function() {
+            proj = this.getProjection();
+        };
+        overlay.setMap(mp);
+    })();
+
     var clipMap;//地图区域选择实例
 	$("#stabs").tabs({
 		activate: function(e, ui) {
@@ -17,8 +26,10 @@ $(document).ready(function () {
             var regionCapture =  ui.oldPanel.find("button[name='region_capture']");
             if (regionCapture.length > 0 && regionCapture.html().indexOf("选择区域") == -1) {
                 regionCapture.children().eq(0).html('选择区域');
-                mp.setDefaultCursor("-moz-grab");
-                mp.enableDragging();
+                mp.setOptions({
+                    draggableCursor: 'default',
+                    draggable: false
+                });
                 clipMap.setOptions({ hide: true, disable: true });
             }
 		},
@@ -35,25 +46,20 @@ $(document).ready(function () {
                 disable: true,
                 instance: true,
                 parent: "#map",
+                zIndex: 10,
                 onSelectEnd: function (it, selection) {
                     var index = $("#stabs").tabs("option", "active"),
-                        _topLeft = mp.pixelToPoint(new BMap.Pixel(selection.x1, selection.y1)),
-                        _bottomRight = mp.pixelToPoint(new BMap.Pixel(selection.x2, selection.y2));
-                    //百度坐标转换成gps坐标
-                    var gpsPoints = [];
-                    gpsPoints.push(_topLeft.lng + "," + _topLeft.lat);
-                    gpsPoints.push(_bottomRight.lng + "," + _bottomRight.lat);
-
-                    gps2bd(gpsPoints, function(bdPoints) {
-                        if (bdPoints) {
-                            var _topLeftNew = bdPoints[0],
-                                _bottomRightNew = bdPoints[1];
-                            $("#left" + index).val(_topLeft.lng * 2 - _topLeftNew.lng);
-                            $("#bottom" + index).val(_topLeft.lat * 2 - _topLeftNew.lat);
-                            $("#right" + index).val(_bottomRight.lng * 2 - _bottomRightNew.lng);
-                            $("#top" + index).val(_bottomRight.lat * 2 - _bottomRightNew.lat);
-                        }
-                    });
+                        _topLeft = proj.fromContainerPixelToLatLng(new qq.maps.Point(selection.x1, selection.y1)),
+                        _bottomRight = proj.fromContainerPixelToLatLng(new qq.maps.Point(selection.x2, selection.y2));
+                    _topLeft = coordtransform.gcj02towgs84(_topLeft.lng, _topLeft.lat);
+                    _bottomRight = coordtransform.gcj02towgs84(_bottomRight.lng, _bottomRight.lat);
+                    $("#left" + index).val(_topLeft[0]);
+                    $("#bottom" + index).val(_topLeft[1]);
+                    $("#right" + index).val(_bottomRight[0]);
+                    $("#top" + index).val(_bottomRight[1]);
+                    console.log(selection);
+                    console.log(_topLeft);
+                    console.log(_bottomRight);
                 }
             });
 
@@ -92,33 +98,22 @@ $(document).ready(function () {
                     var regionCapture = $tabSelf.find("#region_capture" + tabsIndex);
                     if (regionCapture.length > 0 && regionCapture.html().indexOf("选择区域") == -1) {
                         regionCapture.children().eq(0).html('选择区域');
-                        mp.setDefaultCursor("-moz-grab");
-                        mp.enableDragging();
+                        mp.setOptions({
+                            draggableCursor: '-moz-grab',
+                            draggable: true
+                        });
                         clipMap.setOptions({ hide: true, disable: true });
                     }
-                    $this.addClass("disabled");
-                    var html = $this.html();
-                    $this.html("正在查询...");
-                    query($.toJSON(cons), function () {
-                        $this.html(html);
-                        $this.removeClass("disabled");
-                    });
                 } else {
-                    var msg, option = {placement: 'right'};
-                    if (tabsIndex == 0) {
-                        msg = "请输入相关记录人";
-                    } else if (tabsIndex == 1) {
-                        msg = "请输入相关地址";
-                    } else if (tabsIndex == 2) {
-                        msg = "请先选择时间段";
-                    }else if (tabsIndex == 3) {
-                        msg = "请先选择区域";
-                    } else {
-                        msg = "选项不能全部为空";
-
-                    }
-                    tooltipShow($this, 2000, msg, option);
+                    cons['recorder'] = $('#account').text();
                 }
+                $this.addClass("disabled");
+                var html = $this.html();
+                $this.html("正在查询...");
+                query($.toJSON(cons), function () {
+                    $this.html(html);
+                    $this.removeClass("disabled");
+                });
             });
 
             function isNullOrEmpty(val) {
@@ -163,7 +158,7 @@ $(document).ready(function () {
                     },
                     beforeSend: function () {
                         jmap.clear();
-                        mp.clearOverlays();
+                        // TODO 缺清除地图的所有覆盖物
                         $("#track-length").addClass("hidden").find("span").html(0);
                         queryResult
                             .hide()
@@ -184,13 +179,17 @@ $(document).ready(function () {
                     var $it = $(this);
                     if ($it.html().indexOf("选择区域") > -1) {
                         $it.children().eq(0).html('取消截图');
-                        mp.setDefaultCursor("default");
-                        mp.disableDragging();
+                        mp.setOptions({
+                            draggableCursor: 'default',
+                            draggable: false
+                        });
                         clipMap.setOptions({ enable: true });
                     } else {
                         $it.children().eq(0).html('选择区域');
-                        mp.setDefaultCursor("-moz-grab");
-                        mp.enableDragging();
+                        mp.setOptions({
+                            draggableCursor: '-moz-grab',
+                            draggable: true
+                        });
                         clipMap.setOptions({ hide: true, disable: true });
                     }
                 });
