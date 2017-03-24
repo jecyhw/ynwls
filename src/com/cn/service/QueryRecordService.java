@@ -1,6 +1,7 @@
 package com.cn.service;
 
 import com.cn.bean.ConditionEntity;
+import com.cn.bean.PageInfo;
 import com.cn.dao.TTracksDao;
 import com.cn.util.DBUtil;
 import com.cn.util.Json;
@@ -24,6 +25,15 @@ public class QueryRecordService extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List result = new ArrayList();
         ConditionEntity conditionEntity = new ConditionEntity();
+
+        String page = request.getParameter("page");
+        String size = request.getParameter("size");
+        if (page != null && size != null) {
+            PageInfo pageInfo = new PageInfo();
+            pageInfo.setPage(Integer.valueOf(page));
+            pageInfo.setSize(Integer.valueOf(size));
+            conditionEntity.setPage(pageInfo);
+        }
         String data = request.getParameter("data");
         if (data != null) {
             conditionEntity = (ConditionEntity) Json.read(data, ConditionEntity.class);

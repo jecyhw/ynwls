@@ -203,11 +203,10 @@ $(document).ready(function () {
                 $(time).datepicker(
                     $.extend($.datepicker.regional['zh-CN'],{
                         dateFormat:"yy-mm-dd",
-                        //changeMonth:true,
-                        //changeYear:true,
+                        changeMonth:true,
+                        changeYear:true,
                         maxDate: new Date(),
                         showButtonPanel: true,
-                        numberOfMonths: 2,
                         //showOn: 'both',
                         onSelect: function (selectedDate ) {
                             $endTime.eq(index).datepicker("option", "minDate", selectedDate);
@@ -220,9 +219,9 @@ $(document).ready(function () {
                 $(time).datepicker(
                     $.extend($.datepicker.regional['zh-CN'],{
                         dateFormat:"yy-mm-dd",
-                        //changeMonth:true,
+                        changeMonth:true,
+                        changeYear:true,
                         showButtonPanel: true,
-                        numberOfMonths: 2,
                         //showOn: 'both',
                         onSelect: function (selectedDate ) {
                             $startTime.eq(index).datepicker("option", "maxDate", selectedDate);

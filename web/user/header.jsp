@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8"%>
 <link href="../css/ie8.css" rel="stylesheet" media="screen">
 <div class="navbar navbar-default">
-    <div class="container navbar-container">
+    <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand"><strong>Web端轨迹管理系统</strong></a>
         </div>

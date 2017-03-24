@@ -192,6 +192,10 @@
         .fancybox-inner table td img:hover {
             cursor: pointer;
         }
+
+         .ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
+             color: black;
+         }
     </style>
 </head>
 <body>
@@ -331,6 +335,9 @@
             </div>
         </a>
         <div class="top-right-topright">
+            <a class="btn btn-primary btn-sm" href="statistics.jsp">
+                轨迹统计
+            </a>
             <% try { Integer role = (Integer)session.getAttribute("role"); if (role >= 0 && role < 2) {
                 Object count = DBUtil.query(
                         new AEntityDao() {

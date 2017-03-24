@@ -37,6 +37,8 @@ public class ConditionEntity {
     String sql = null;
     List sqlValues = null;
 
+    PageInfo page;
+
     public String getSql() {
         /*
         select b.* from (select t_tracks.* from t_tracks, (SELECT DISTINCT t_tracks_points.trackid FROM t_tracks_points WHERE
@@ -199,6 +201,11 @@ and( latitude>='-1.209283' and latitude<'180.959893' )))a where t_tracks.trackid
             //sb.append("or").append(SqlAssist.addEqual("keysiteslist", address));
             //sb.append("or").append(SqlAssist.addEqual("annotation", address)).append(")");
         }
+        if (page != null) {
+            sb.append(" order by trackid desc limit ?, ?");
+            sqlValues.add(page.getStart());
+            sqlValues.add(page.getSize());
+        }
         sql = sb.toString();
     }
 
@@ -288,6 +295,14 @@ and( latitude>='-1.209283' and latitude<'180.959893' )))a where t_tracks.trackid
 
     public void setKeysiteslist(String keysiteslist) {
         this.keysiteslist = keysiteslist;
+    }
+
+    public PageInfo getPage() {
+        return page;
+    }
+
+    public void setPage(PageInfo page) {
+        this.page = page;
     }
 
     public boolean isEmpty() {

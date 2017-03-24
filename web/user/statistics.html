@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>轨迹统计</title>
+    <link rel="stylesheet" type="text/css" href="../js/jquery-ui/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="../js/bootstrap/css/bootstrap.css" media="screen"/>
+
+
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/echarts/echarts.min.js"></script>
+
+    <script type="text/javascript" src="../js/jquery-ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui/i18n/jquery.ui.datepicker-zh-CN.js"></script>
+    <script type="text/javascript" src="../js/all.js"></script>
+
+</head>
+<body>
+<div class="container">
+    <p></p>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-inline">
+                <label class="control-label" for="startTime2">从</label>
+                <input class="form-control input-sm input-xss" type="text" name="startTime" placeholder="开始时间" id="startTime2"/>
+                <label class="control-label" for="endTime2">到</label>
+                <input class="form-control input-sm input-xss" type="text" name="endTime" placeholder="结束时间" id="endTime2"/>
+                <button type="submit" class="btn btn-sm btn-success" id="query">查询</button>
+            </div>
+        </div>
+    </div>
+    <hr/>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 100%;height:600px;"></div>
+</div>
+<script type="text/javascript">
+    var  $startTime =  $("input[name='startTime']"),
+        $endTime = $("input[name='endTime']");
+    //日历绑定
+    $startTime.each(function(index, time) {
+        $(time).datepicker(
+            $.extend($.datepicker.regional['zh-CN'],{
+                dateFormat:"yy-mm-dd",
+                //changeMonth:true,
+                //changeYear:true,
+                maxDate: new Date(),
+                showButtonPanel: true,
+                //showOn: 'both',
+                onSelect: function (selectedDate ) {
+                    $endTime.eq(index).datepicker("option", "minDate", selectedDate);
+                    $endTime.eq(index).datepicker("option", "defaultDate", selectedDate);
+                }
+            })
+        );
+    });
+    $endTime.each(function(index, time) {
+        $(time).datepicker(
+            $.extend($.datepicker.regional['zh-CN'],{
+                dateFormat:"yy-mm-dd",
+                //changeMonth:true,
+                showButtonPanel: true,
+                //showOn: 'both',
+                onSelect: function (selectedDate ) {
+                    $startTime.eq(index).datepicker("option", "maxDate", selectedDate);
+                    $startTime.eq(index).datepicker("option", "defaultDate", selectedDate);
+                }
+            })
+        );
+    });
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        title: {
+            text: '时间段内轨迹总长度(单位:米)'
+        },
+        tooltip: {},
+        legend: {
+            data:['长度']
+        },
+        xAxis: {
+            data: []
+        },
+        yAxis: {},
+        dataZoom: [
+            {
+                type: 'inside'
+            }
+        ],
+        series: [{
+            name: '长度',
+            type: 'line',
+            data: []
+        }]
+    };
+
+    var dataAxis = option.xAxis.data, seriesData = option.series[0].data;
+
+    $('#query').click(function () {
+        myChart.showLoading();
+
+        $.getJSON(web_prefix + '/Statistics', { startTime: $startTime.val(), endTime: $endTime.val() }).done(function (data) {
+            dataAxis = option.xAxis.data = data.xAxis;
+            option.series = data.series;
+            seriesData = data.series[0].data;
+            myChart.setOption(option);
+            myChart.hideLoading();
+        });
+    }).click();
+    // Enable data zoom when user click bar.
+    var zoomSize = 6;
+    myChart.on('click', function (params) {
+        console.log(dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)]);
+        myChart.dispatchAction({
+            type: 'dataZoom',
+            startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
+            endValue: dataAxis[Math.min(params.dataIndex + zoomSize / 2, seriesData.length - 1)]
+        });
+    });
+
+</script>
+</body>
+</html>

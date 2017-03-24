@@ -19,10 +19,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="ant" level="project" />
-    <orderEntry type="library" name="file-upload" level="project" />
-    <orderEntry type="library" name="jdbc" level="project" />
-    <orderEntry type="library" name="json" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 8.5.9" level="application_server_libraries" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>
