@@ -26,7 +26,7 @@
     <link rel="stylesheet" type="text/css" href="../js/fancybox/helpers/jquery.fancybox-buttons.css"  media="screen">
 
     <script type="text/javascript" src="../js/jquery.js"></script>
-    <script type="text/javascript" src="../js/bootstrap/js/tooltip.js"></script>
+    <script type="text/javascript" src="../js/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../js/jquery-ui/jquery-ui.js"></script>
     <script type="text/javascript" src="../js/jquery-ui/i18n/jquery.ui.datepicker-zh-CN.js"></script>
     <script type="text/javascript" src="../js/plupload/plupload.full.min.js"></script>
@@ -43,6 +43,7 @@
     <script type="text/javascript" src="../js/gps_bd.js"></script>
     <script type="text/javascript" src="../js/jmap.js"></script>
     <script type="text/javascript" src="../js/trackRecord.js"></script>
+    <script type="text/javascript" src="../js/fullscreen.js"></script>
 
     <style>
         html, body {
@@ -56,78 +57,46 @@
 
         .form-control-hack, .form-group-hack input[type="text"] {
             display: inline ;
-            width: 120px ;
+            width: 130px ;
         }
 
-        .input-xss {
-            display: inline ;
-            width: 90px;
-        }
-        .stabs-hack {
-            padding-left: 0px;
-            padding-right: 0px;
-        }
-
-        .top-left {
-            width: 800px;
-            text-align: center;
+        .left {
             position: absolute;
-            top: 0px;
-            left: 0px;
-        }
-
-        .top-right {
-            position: absolute;
-            left: 800px;
-            right: 0px;
-            top: 0px;
-            text-align: center;
-            min-width: 300px;
-        }
-        #show_rtup {
-            display: block;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-        #show_rtup img {
-            width: 100%;
-            height: 100%;
-        }
-
-        .top-right-topright {
-            position: absolute;
-            right: 0px;
-            top: 0px;
-        }
-
-        .top-right-bottomright {
-            position: absolute;
-            right: 0px;
-            bottom: 0px;
-        }
-
-        .bottom {
-            position: absolute;
-            bottom: 0px;
-            top: 163px;
-            width: 100%;
-        }
-
-        .bottom-left {
-            float: left;
-            position: relative;
-            width: 403px;
-            height: 100%;
+            bottom: 0;
+            top: 0;
+            left: 0;
+            width: 430px;
+            padding: 5px;
+            border-right: 1px solid #dddddd;
             overflow-y: auto;
         }
 
-        #map {
+        .fullscreen {
+            position: fixed;
+            bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .top {
             overflow: hidden;
-            position: relative;
-            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 430px;
+            height: 40px;
+            right: 0;
+            padding: 5px;
+        }
+
+        .map {
+            overflow: hidden;
+            position: absolute;
+            top: 40px;
+            left: 430px;
+            bottom: 0;
+            right: 0;
             border-top: 1px solid #dddddd;
-            border-left: 1px solid #dddddd;
         }
 
         /* upload file css start*/
@@ -135,7 +104,7 @@
             display: none;
             position: absolute;
             right: 20px;
-            bottom: 0px;
+            bottom: 0;
             z-index: 100;
             width: 600px;
         }
@@ -165,179 +134,126 @@
             !important;
         }
         /* upload file css end*/
-        .table-overlay {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            right: 0px;
-            bottom: 0px;
-            z-index: 100;
-            display: none;
-        }
-        .table-overlay {
-            position: fixed;
-            width: 403px;
-        }
-
-        .sjyfi-loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            margin-top: -22px;
-            margin-left: -22px;
-            width: 44px;
-            height: 44px;
-            background: url('../js/fancybox/fancybox_loading.gif') center center no-repeat;
-        }
         .fancybox-inner table td img:hover {
             cursor: pointer;
         }
 
-         .ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
-             color: black;
-         }
+        .ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
+            color: black;
+        }
+        hr {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
 <div>
-    <div id="stabs" class="top-left">
-        <ul>
-            <li><a href="#stabs-0">记录人检索</a></li>
-            <li><a href="#stabs-1">地点检索</a></li>
-            <li><a href="#stabs-2">时间段检索</a></li>
-            <li><a href="#stabs-3">区域检索</a></li>
-            <li><a href="#stabs-4">综合检索</a></li>
-        </ul>
-        <div id="stabs-0" class="stabs-hack">
-            <label class="sr-only control-label" for="recorder0">相关记录人</label>
-            <input class="form-control input-sm form-control-hack" type="text" name="recorder"
-                   placeholder="相关记录人" id="recorder0"/>
-            <button class="btn btn-primary btn-sm" type="button" name="search_submit" id="search_submit0" data-loading-text="正在查询...">
-                <span>搜索</span>
-                <span class="glyphicon glyphicon-search"></span>
-            </button>
-        </div>
-        <div id="stabs-1" class="stabs-hack">
-            <label class="sr-only control-label" for="address1">相关地址</label>
-            <input class="form-control input-sm form-control-hack" type="text" name="address"
-                   placeholder="相关地址" id="address1"/>
-            <button class="btn btn-primary btn-sm" type="button" name="search_submit" id="search_submit1">
-                <span>搜索</span>
-                <span class="glyphicon glyphicon-search"></span>
-            </button>
-        </div>
-        <div id="stabs-2" class="stabs-hack">
-            <label class="control-label" for="startTime2">从</label>
-            <input class="form-control input-sm input-xss" type="text" name="startTime" placeholder="开始时间" id="startTime2"/>
-            <label class="control-label" for="endTime2">到</label>
-            <input class="form-control input-sm input-xss" type="text" name="endTime" placeholder="结束时间" id="endTime2"/>
-            <button class="btn btn-primary btn-sm" type="button" name="search_submit" id="search_submit2">
-                <span>搜索</span>
-                <span class="glyphicon glyphicon-search"></span>
-            </button>
-        </div>
-        <div id="stabs-3" class="stabs-hack">
-            <table style="margin: 0px auto; width: 600px">
-                <tr>
-                    <td>
-                        <label class="control-label" for="left3">左上角:经度</label>
-                        <input class="form-control input-sm input-xss" type="text" name="left" id="left3"/>
-                        <label class="control-label" for="top3">纬度</label>
-                        <input class="form-control input-sm input-xss" type="text" name="top" id="top3"/>
-                    </td>
-                    <td rowspan="2">
-                        <button class="btn btn-primary btn-sm" type="button" name="region_capture"
-                                id="region_capture3">
-                            <span>选择区域</span>
-                            <span class="glyphicon glyphicon-screenshot"></span>
-                        </button>
-                        <button class="btn btn-primary btn-sm" type="button" name="search_submit" id="search_submit3">
-                            <span>搜索</span>
-                            <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label class="control-label" for="right3">右下角:经度</label>
-                        <input class="form-control input-sm input-xss" type="text" name="right" id="right3"/>
-                        <label class="control-label" for="bottom3">纬度</label>
-                        <input class="form-control input-sm input-xss" type="text" name="bottom"  id="bottom3"/>
-                    </td>
-                    <td></td>
-                </tr>
-            </table>
-        </div>
-        <div id="stabs-4" class="stabs-hack">
-            <table style="margin: 0px auto; width: 796px">
-                <tr>
-                    <td style="width: 350px">
-                        <label class="control-label" for="startTime4">时间段:</label>
-                        <label class="control-label" for="startTime4">从</label>
-                        <input class="form-control input-sm input-xss" type="text"
-                               name="startTime" placeholder="开始时间"  id="startTime4"/>
-                        <label class="control-label" for="endTime4">到</label>
-                        <input class="form-control input-sm input-xss" type="text" name="endTime"
-                               placeholder="结束时间"  id="endTime4"/>
-                    </td>
-                    <td  style="width: 76px">
-                        <label class="control-label" for="left4">区域坐标:</label>
-                    </td>
-                    <td  style="width: 370px">
-                        <label class="control-label" for="left4">左上角:经度</label>
-                        <input class="form-control input-sm input-xss" type="text" name="left"  id="left4"/>
-                        <label class="control-label" for="top4">纬度</label>
-                        <input class="form-control input-sm input-xss" type="text" name="top"  id="top4"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label class="control-label" for="address4">地点:</label>
-                        <input	class="form-control input-sm form-control-hack" type="text" name="address"
-                                  placeholder="相关地址"  id="address4"/>
-                        <label class="control-label" for="recorder4">记录人:</label>
-                        <input class="form-control input-sm form-control-hack" type="text"
-                               name="recorder" placeholder="相关记录人"  id="recorder4"/></td>
-                    <td></td>
-                    <td>
-                        <label class="control-label" for="right4">右下角:经度</label>
-                        <input class="form-control input-sm input-xss" type="text"
-                               name="right"  id="right4" />
-                        <label class="control-label" for="bottom4">纬度</label>
-                        <input class="form-control input-sm input-xss" type="text" name="bottom"  id="bottom4"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <button class="btn btn-primary btn-sm" type="button" name="search_submit" id="search_submit4">
-                            <span>搜索</span>
-                            <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-primary btn-sm" type="button" name="region_capture"
-                                id="region_capture4">
-                            <span>选择区域</span>
-                            <span class="glyphicon glyphicon-screenshot"></span>
-                        </button>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div class="top-right">
-        <a id="show_rtup" href="showRealTime.jsp">
-            <div class="tooltip right" role="tooltip">
-                <div class="tooltip-arrow"></div>
-                <div class="tooltip-inner">
-                    点击查看用户实时位置
+    <div class="left">
+        <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            搜索
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                        <div>
+                            <label class="control-label" for="address">地点:</label>
+                            <input	class="form-control form-control-hack input-sm" type="text" name="address"
+                                      placeholder="相关地址"  id="address"/>
+                            <label class="control-label" for="recorder">记录人:</label>
+                            <input class="form-control form-control-hack input-sm" type="text"
+                                   name="recorder" placeholder="相关记录人"  id="recorder"/>
+                        </div>
+                        <hr/>
+                        <div>
+                            <label class="control-label" for="startTime">时间段:</label>
+                            <label class="control-label" for="startTime">从</label>
+                            <input class="form-control form-control-hack input-sm" type="text"
+                                   name="startTime" placeholder="开始时间"  id="startTime"/>
+                            <label class="control-label" for="endTime">到</label>
+                            <input class="form-control form-control-hack input-sm" type="text" name="endTime"
+                                   placeholder="结束时间"  id="endTime"/>
+                        </div>
+                        <hr/>
+
+                        <div>
+                            <div>
+                                <label class="control-label" for="left">左上角:经度</label>
+                                <input class="form-control form-control-hack input-sm" disabled type="text" name="left"  id="left"/>
+                                <label class="control-label" for="top">纬度</label>
+                                <input class="form-control form-control-hack input-sm" disabled type="text" name="top"  id="top"/>
+                            </div>
+                            <p></p>
+                            <div>
+                                <label class="control-label" for="right">右下角:经度</label>
+                                <input class="form-control form-control-hack input-sm" disabled type="text" name="right"  id="right" />
+                                <label class="control-label" for="bottom">纬度</label>
+                                <input class="form-control form-control-hack input-sm" disabled type="text" name="bottom"  id="bottom"/>
+                            </div>
+                            <p></p>
+                            <div>
+                                    <button class="btn btn-primary btn-sm btn-block" type="button" name="region_capture"
+                                            id="region_capture">
+                                        <span>在地图上选择区域</span>
+                                        <span class="glyphicon glyphicon-screenshot"></span>
+                                    </button>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div>
+                            <button class="btn btn-success btn-sm btn-block" type="button" name="search_submit" id="search_submit">
+                                <span>搜索</span>
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </a>
-        <div class="top-right-topright">
-            <a class="btn btn-primary btn-sm" href="statistics.jsp">
+        <div class="panel panel-default">
+            <table class="table table-bordered table-hover table-condensed table-striped table-responsive">
+                <thead>
+                <tr id="track-length" class="hidden">
+                    <th colspan="4">轨迹总长度:<span>0</span>米</th>
+                </tr>
+                <tr>
+                    <th>显示</th>
+                    <th>名称</th>
+                    <th>起止时间</th>
+                    <th>文件大小</th>
+                </tr>
+                </thead>
+                <tbody id="query-result">
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h5 style="float: left">共<span id="total">1</span>条</h5>
+            <nav style="float: right">
+                <ul class="pagination" style="margin: 0;">
+
+                </ul>
+            </nav>
+        </div>
+         </div>
+    <div class="top">
+        <div style="float: left">
+            <button type="button" class="btn btn-success btn-sm"
+                    id="file_upload">
+                <span>文件上传</span>
+                <span class="glyphicon glyphicon-upload"></span>
+            </button>
+            <a class="btn btn-sm btn-success" href="showRealTime.jsp">
+                用户实时位置
+            </a>
+            <a class="btn btn-success btn-sm" href="statistics.jsp">
                 轨迹统计
             </a>
+        </div>
+        <div style="float: right">
             <% try { Integer role = (Integer)session.getAttribute("role"); if (role >= 0 && role < 2) {
                 Object count = DBUtil.query(
                         new AEntityDao() {
@@ -365,52 +281,26 @@
                 <span class="glyphicon glyphicon-off"></span>
             </button>
         </div>
-        <div class="top-right-bottomright">
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary btn-sm"
-                        id="file_upload">
-                    <span>文件上传</span>
-                    <span class="glyphicon glyphicon-upload"></span>
-                </button>
-                <% try { Integer role = (Integer)session.getAttribute("role"); if (role >= 0 && role < 2) {
-                %>
-                <button type="button" class="btn btn-primary btn-sm"
-                        id="save_track_record">
-                    <span>保存轨迹</span>
-                    <span class="glyphicon glyphicon-import"></span>
-                </button>
-                <%}} catch (Exception e) {}%>
+        <%--<div>--%>
+            <%--<div class="btn-group">--%>
+                <%--<% try { Integer role = (Integer)session.getAttribute("role"); if (role >= 0 && role < 2) {--%>
+                <%--%>--%>
+                <%--<button type="button" class="btn btn-primary btn-sm"--%>
+                        <%--id="save_track_record">--%>
+                    <%--<span>保存轨迹</span>--%>
+                    <%--<span class="glyphicon glyphicon-import"></span>--%>
+                <%--</button>--%>
+                <%--<%}} catch (Exception e) {}%>--%>
 
-                <button type="button" class="btn btn-primary btn-sm"
-                        id="export_track_record">
-                    <span>导出轨迹</span>
-                    <span class="glyphicon glyphicon-export"></span>
-                </button>
-            </div>
-        </div>
+                <%--<button type="button" class="btn btn-primary btn-sm"--%>
+                        <%--id="export_track_record">--%>
+                    <%--<span>导出轨迹</span>--%>
+                    <%--<span class="glyphicon glyphicon-export"></span>--%>
+                <%--</button>--%>
+            <%--</div>--%>
+        <%--</div>--%>
     </div>
-    <div class="bottom">
-        <div class="bottom-left">
-            <table class="table table-bordered table-hover table-condensed table-striped">
-                <thead>
-                <tr id="track-length" class="hidden">
-                    <th colspan="4">轨迹总长度:<span>0</span>米</th>
-                </tr>
-                <tr>
-                    <th>显示</th>
-                    <th>名称</th>
-                    <th>起止时间</th>
-                    <th>文件大小</th>
-                </tr>
-                </thead>
-                <tbody id="query-result">
-                </tbody>
-            </table>
-            <div class="table-overlay"><div class="sjyfi-loading"></div></div>
-        </div>
-        <div id="map"></div>
-    </div>
-
+    <div id="map" class="map"></div>
 </div>
 <div class="file-upload-list" id="file-upload-list">
     <div class="ui-widget-header text-right">
@@ -439,7 +329,5 @@
         </div>
     </div>
 </div>
-<%--<div style="display: none !important;" id="preload"></div>--%>
-<%--<div id="ui-dialog"></div>--%>
 </body>
 </html>

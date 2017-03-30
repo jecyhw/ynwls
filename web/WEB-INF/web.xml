@@ -263,12 +263,22 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>QueryRecordPageService</servlet-name>
+        <servlet-class>com.cn.service.QueryRecordPageService</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>QueryRecordPageService</servlet-name>
+        <url-pattern>/QueryRecordPage</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <description>服务器重启未解压成功的文件重新解压</description>
         <display-name>autoRunWhenTomcatRestart</display-name>
         <servlet-name>AutoRunServlet</servlet-name>
         <servlet-class>com.cn.action.AutoRunServlet</servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
+   
     <servlet-mapping>
         <servlet-name>AutoRunServlet</servlet-name>
         <url-pattern>/AutoRunServlet</url-pattern>

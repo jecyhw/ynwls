@@ -48,10 +48,10 @@
     <hr/>
     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div id="length" style="width: 100%;height:400px;"></div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div id="sum" style="width: 100%;height:400px;"></div>
         </div>
     </div>
@@ -144,6 +144,7 @@
                     {
                         name: '总长度',
                         type: 'bar',
+                        barWidth: 10,
                         data: seriesData
                     }
                 ]
@@ -183,11 +184,11 @@
             // 指定图表的配置项和数据
             var option = {
                 title: {
-                    text: name
+                    text:name +  '-历史轨迹长度(米)'
                 },
                 tooltip: {},
                 legend: {
-                    data:['历史轨迹长度']
+                    data:['折线图', '柱状图']
                 },
                 xAxis: {
                     data: axis
@@ -195,8 +196,28 @@
                 yAxis: {},
                 series: [
                     {
-                        name: '历史轨迹长度',
+                        name: '折线图',
                         type: 'line',
+                        lineStyle: {
+                            normal: {
+                                width: 3,
+                                shadowColor: 'rgba(0,0,0,0.4)',
+                                shadowBlur: 10,
+                                shadowOffsetY: 10
+                            }
+                        },
+                        data: series
+                    },
+                    {
+                        name: '柱状图',
+                        type: 'bar',
+                        barWidth: 10,
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+                        },
                         data: series
                     }
                 ]

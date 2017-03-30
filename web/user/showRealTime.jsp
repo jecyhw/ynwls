@@ -24,30 +24,33 @@
             position: relative;
         }
 
-        .content {
-            position: absolute;
-            width: 100%;
-            top: 60px;
-            bottom: 0;
-        }
-
         .left {
-            padding-top: 10px;
-            float: left;
+            position: absolute;
+            padding: 10px;
             width: 350px;
-            position: relative;
-            height: 100%;
+            top: 50px;
+            bottom: 0;
+            left: 0;
             overflow-y: auto;
             overflow-x: hidden;
         }
 
-        #map {
-            height: 100%;
-
+        .map {
+            overflow: hidden;
+            position: absolute;
+            top: 50px;
+            left: 350px;
+            bottom: 0;
+            right: 0;
+            border-left: 1px solid #dddddd;
         }
-        .pr0 {
-            padding-top: 0px;
-            padding-bottom: 0px;
+
+        .fullscreen {
+            position: fixed;
+            bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
         }
     </style>
     <script type="text/javascript" src="../js/jquery.js"></script>
@@ -59,51 +62,48 @@
     <script type="text/javascript" src="../js/gps_bd.js"></script>
     <script type="text/javascript" src="../js/rtol.js"></script>
     <script type="text/javascript" src="../js/lp.js"></script>
+    <script type="text/javascript" src="../js/fullscreen.js"></script>
 </head>
 <body>
 <div class="header">
     <jsp:include page="header.jsp"/>
 </div>
-<div class="content">
-    <div class="left container">
-        <div class="">
-            <label class="btn-xs btn-primary" id="online-number">当前在线人数
-                <span class="badge online">0</span>
-            </label>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading"><h3 class="panel-title">查找用户当前地理位置信息</h3></div>
-            <div class="panel-body">
-                <div class="form-group">
-                    <label for="upi">用户名</label>
-                    <input type="text" class="form-control" id="upi" >
-
-                </div>
-                <div>
-                    <button type="submit" class="btn btn-primary clear" data-for="upi">清除</button>
-                    <button type="submit" class="btn btn-primary search" data-for="upi">查找</button>
-                </div>
+<div class="left container">
+    <div class="">
+        <label class="btn-xs btn-primary" id="online-number">当前在线人数
+            <span class="badge online">0</span>
+        </label>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">查找用户当前地理位置信息</h3></div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="upi">用户名</label>
+                <input type="text" class="form-control" id="upi" >
 
             </div>
+            <div>
+                <button type="submit" class="btn btn-primary clear" data-for="upi">清除</button>
+                <button type="submit" class="btn btn-primary search" data-for="upi">查找</button>
+            </div>
+
         </div>
-
-
-        <div class="panel panel-default">
-            <div class="panel-heading"><h3 class="panel-title">查找用户历史地理位置信息</h3></div>
-            <div class="panel-body">
-                <div class="form-group">
-                    <label for="uhi">用户名</label>
-                    <input type="text" class="form-control" id="uhi">
-                </div>
-                <div>
-                    <button type="submit" class="btn btn-primary clear" data-for="uhi">清除</button>
-                    <button type="submit" class="btn btn-primary search" data-for="uhi">查找</button>
-                </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">查找用户历史地理位置信息</h3></div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="uhi">用户名</label>
+                <input type="text" class="form-control" id="uhi">
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary clear" data-for="uhi">清除</button>
+                <button type="submit" class="btn btn-primary search" data-for="uhi">查找</button>
             </div>
         </div>
     </div>
-    <div id="map">
-    </div>
+</div>
+<div id="map" class="map">
 </div>
 </body>
 </html>

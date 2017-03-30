@@ -3,7 +3,6 @@ package com.cn.bean;
 import com.cn.util.JsonTimestampDeserialize;
 import com.cn.util.JsonTimestampSerializer;
 import com.cn.util.TableName;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -37,7 +36,8 @@ public class ConditionEntity {
     String sql = null;
     List sqlValues = null;
 
-    PageInfo page;
+
+    StringBuilder sb = new StringBuilder();
 
     public String getSql() {
         /*
@@ -58,12 +58,11 @@ and( latitude>='-1.209283' and latitude<'180.959893' )))a where t_tracks.trackid
         return sqlValues;
     }
 
-    private void get() {
+    protected void get() {
         if (sqlValues == null) {
             sqlValues = new ArrayList();
         }
-        StringBuilder sb = new StringBuilder();
-        boolean flag = false;
+        List<String> and = new ArrayList<>();
         if (top != null || left != null || right != null || bottom != null) {
             //sb.append("select b.* from (select t_tracks.* from t_tracks, (select distinct t_tracks_points.trackid from t_tracks_points where (");
             sb.append("select b.* from (select ")
@@ -74,137 +73,72 @@ and( latitude>='-1.209283' and latitude<'180.959893' )))a where t_tracks.trackid
                     .append(TableName.getTrackPoint())
                     .append(".trackid from ")
                     .append(TableName.getTrackPoint())
-                    .append(" where (");
+                    .append(" where ( ");
 
             if (left != null) {
-                sb.append(" longitude >= ? ");
+                and.add("longitude >= ?");
                 sqlValues.add(left);
-                //sb.append(SqlAssist.addGreatEqual("longitude", left.toString()));
-                flag = true;
             }
 
             if (right != null) {
-                if (flag) {
-                    sb.append("and");
-                }
-                sb.append(" longitude <= ? ");
+                and.add("longitude <= ?");
                 sqlValues.add(right);
-                //sb.append(SqlAssist.addLessEqual("longitude", right.toString()));
-                flag = true;
             }
 
             if (top != null) {
-                if (flag) {
-                    sb.append("and");
-                }
-                sb.append(" latitude >= ? ");
+                and.add("latitude >= ?");
                 sqlValues.add(top);
-                //sb.append(SqlAssist.addGreatEqual("latitude", top.toString()));
-                flag = true;
             }
 
             if (bottom != null) {
-                if (flag) {
-                    sb.append("and");
-                }
-                sb.append(" latitude <= ? ");
+                and.add("latitude <= ?");
                 sqlValues.add(bottom);
-                //sb.append(SqlAssist.addLessEqual("latitude", bottom.toString()));
-                flag = true;
             }
-
-            //sb.append("))a where t_tracks.trackid = a.trackid)b");
+            sb.append(String.join(" and ", and));
             sb.append("))a where ")
                     .append(TableName.getTracks())
                     .append(".trackid = a.trackid)b");
-
-            if (recorder != null || startTime != null || endTime != null || address != null || name != null || annotation != null || keysiteslist != null) {
-                sb.append(" where ");
-            }
-            else {
-                sql = sb.toString();
-                return ;
-            }
         } else {
             //sb.append("select distinct * from t_tracks where ");
-            sb.append("select distinct * from ")
-                    .append(TableName.getTracks())
-                    .append(" where ");
+            sb.append("select * from ")
+                    .append(TableName.getTracks());
         }
 
-        flag = false;
+        and.clear();
         if (recorder != null) {
-            sb.append(" author like ? ");
+            and.add("author like ?");
             sqlValues.add("%" + recorder + "%");
-            //sb.append(SqlAssist.addEqual("author", recorder));
-            flag = true;
         }
-        if (startTime != null || endTime != null) {
-            if (flag)
-                sb.append("and");
-            flag = false;
-            sb.append("(");
-            if (startTime != null) {
-                flag = true;
-                sb.append(" starttime >= ? ");
-                sqlValues.add(startTime.toString());
-                //sb.append(SqlAssist.addGreatEqual("starttime", DateUtil.date2String(startTime)));
-            }
-            if (endTime != null) {
-                if (flag)
-                    sb.append("and");
-                sb.append(" endtime <= ? ");
-                sqlValues.add(endTime.toString());
-                //sb.append(SqlAssist.addLessEqual("endtime", DateUtil.date2String(endTime)));
-            }
-            sb.append(")");
-            flag = true;
+        if (startTime != null) {
+            and.add("starttime >= ?");
+            sqlValues.add(startTime.toString());
+        }
+        if (endTime != null) {
+            and.add("endtime <= ?");
+            sqlValues.add(endTime.toString());
         }
         if (address != null) {
-            if (flag)
-                sb.append("and");
-            sb.append(" (").append(" name like ? ");
+            and.add("(name like ? or keysiteslist like ? or annotation like ?)");
             sqlValues.add("%" + address + "%");
-            sb.append("or").append(" keysiteslist like ? ");
             sqlValues.add("%" + address + "%");
-            sb.append("or").append(" annotation like ? ").append(")");
             sqlValues.add("%" + address + "%");
-            //sb.append("(").append(SqlAssist.addEqual("name", address));
-            //sb.append("or").append(SqlAssist.addEqual("keysiteslist", address));
-            //sb.append("or").append(SqlAssist.addEqual("annotation", address)).append(")");
-            flag = true;
         } else {
             if (name != null) {
-                if (flag)
-                    sb.append("and");
-                sb.append(" name like ? ");
+                and.add("name like ?");
                 sqlValues.add("%" + name + "%");
-                flag = true;
             }
-
             if (keysiteslist != null) {
-                if (flag)
-                    sb.append("and");
-                sb.append(" keysiteslist like ? ");
+                and.add("keysiteslist like ?");
                 sqlValues.add("%" + keysiteslist + "%");
-                flag = true;
             }
 
             if (annotation != null) {
-                if (flag)
-                    sb.append("and");
-                sb.append(" annotation like ? ");
+                and.add("annotation like ?");
                 sqlValues.add("%" + annotation + "%");
-                flag = true;
             }
-            //sb.append("(").append(SqlAssist.addEqual("name", address));
-            //sb.append("or").append(SqlAssist.addEqual("keysiteslist", address));
-            //sb.append("or").append(SqlAssist.addEqual("annotation", address)).append(")");
         }
-        if (page != null) {
-            sb.append(" order by trackid desc limit ?, ?");
-            sqlValues.add(page.getStart());
-            sqlValues.add(page.getSize());
+        if (!and.isEmpty()) {
+            sb.append(" where ").append(String.join(" and ", and));
         }
         sql = sb.toString();
     }
@@ -295,14 +229,6 @@ and( latitude>='-1.209283' and latitude<'180.959893' )))a where t_tracks.trackid
 
     public void setKeysiteslist(String keysiteslist) {
         this.keysiteslist = keysiteslist;
-    }
-
-    public PageInfo getPage() {
-        return page;
-    }
-
-    public void setPage(PageInfo page) {
-        this.page = page;
     }
 
     public boolean isEmpty() {
