@@ -250,7 +250,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>StatisticsServlet</servlet-name>
-        <url-pattern>/Statistics/total</url-pattern>
+        <url-pattern>/Statistics/total.do</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -259,7 +259,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>StatisticsLengthServlet</servlet-name>
-        <url-pattern>/Statistics/length</url-pattern>
+        <url-pattern>/Statistics/length.do</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -269,6 +269,15 @@
     <servlet-mapping>
         <servlet-name>QueryRecordPageService</servlet-name>
         <url-pattern>/QueryRecordPage</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>QueryRecordPageServlet</servlet-name>
+        <servlet-class>com.cn.action.QueryRecordPageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>QueryRecordPageServlet</servlet-name>
+        <url-pattern>/QueryRecordPage.do</url-pattern>
     </servlet-mapping>
 
     <servlet>

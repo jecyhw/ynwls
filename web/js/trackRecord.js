@@ -83,7 +83,7 @@ $(document).ready(function () {
     function query(conditions, callback) {
         var queryResult =  $("#query-result");
         $.ajax({
-            url: web_prefix + "/QueryRecordPage",
+            url: web_prefix + "/QueryRecordPage.do",
             type: "post",
             dataType: "json",
             data: {
@@ -163,7 +163,6 @@ $(document).ready(function () {
                     .fadeIn();
             },
             complete: function (xhr) {
-                checkTimeout(xhr);
                 if (callback) {
                     callback();
                 }

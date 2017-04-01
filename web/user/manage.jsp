@@ -12,10 +12,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
     <link href="../js/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" type="text/css" href="../js/fancybox/jquery.fancybox.css"  media="screen">
 
     <title>用户角色管理</title>
     <script src="../js/jquery.js"></script>
     <script src="../js/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="../js/fancybox/jquery.fancybox.js"></script>
+    <script type="text/javascript" src="../js/all.js"></script>
+
+
     <!--[if lt IE 9]><script src="js/html5.js"></script><![endif]-->
 </head>
 <body>

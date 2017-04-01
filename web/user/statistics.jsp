@@ -13,16 +13,18 @@
     <link rel="stylesheet" type="text/css" href="../js/jquery-ui/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" href="../js/bootstrap/css/bootstrap.css" media="screen"/>
     <link rel="stylesheet" type="text/css" href="../js/datatables/dataTables.bootstrap.min.css" media="screen"/>
-
+    <link rel="stylesheet" type="text/css" href="../js/fancybox/jquery.fancybox.css"  media="screen">
 
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/echarts/echarts.min.js"></script>
 
     <script type="text/javascript" src="../js/jquery-ui/jquery-ui.js"></script>
     <script type="text/javascript" src="../js/jquery-ui/i18n/jquery.ui.datepicker-zh-CN.js"></script>
+    <script type="text/javascript" src="../js/fancybox/jquery.fancybox.js"></script>
     <script type="text/javascript" src="../js/all.js"></script>
     <script type="text/javascript" src="../js/datatables/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="../js/datatables/dataTables.bootstrap.min.js"></script>
+
 
 </head>
 <style>
@@ -113,7 +115,7 @@
 
     $('#query').click(function () {
         sumChart.showLoading();
-        $.getJSON(web_prefix + '/Statistics/total', { startTime: $startTime.val(), endTime: $endTime.val() }).done(function (data) {
+        $.getJSON(web_prefix + '/Statistics/total.do', { startTime: $startTime.val(), endTime: $endTime.val() }).done(function (data) {
             dataAxis = [];
             seriesData = [];
             $.each(data, function (i, obj) {
@@ -173,7 +175,7 @@
 
     function queryLength(name) {
         lengthChart.showLoading();
-        $.getJSON(web_prefix + '/Statistics/length', { startTime: $startTime.val(), endTime: $endTime.val(), author: name }).done(function (data) {
+        $.getJSON(web_prefix + '/Statistics/length.do', { startTime: $startTime.val(), endTime: $endTime.val(), author: name }).done(function (data) {
             var axis = [], series = [];
             $.each(data, function (i, obj) {
                 if (obj.value > 0) {
@@ -212,12 +214,6 @@
                         name: '柱状图',
                         type: 'bar',
                         barWidth: 10,
-                        label: {
-                            normal: {
-                                show: true,
-                                position: 'top'
-                            }
-                        },
                         data: series
                     }
                 ]
