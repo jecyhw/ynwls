@@ -32,9 +32,6 @@ $(document).ready(function () {
             $("#bottom").val(_topLeft[1]);
             $("#right").val(_bottomRight[0]);
             $("#top").val(_bottomRight[1]);
-            console.log(selection);
-            console.log(_topLeft);
-            console.log(_bottomRight);
         }
     });
 
@@ -53,12 +50,15 @@ $(document).ready(function () {
         }
     });
 
+    $("#search_reset").click(function () {
+        $('.search').find("input[type='text']").val('');
+    });
     $searchSubmit.click(function () {
         var count = 0,
             cons = {},
             $this = $(this);
 
-        $('.panel').find("input[type='text']").each(function (_index, text) {
+        $('.search').find("input[type='text']").each(function (_index, text) {
             if (!isNullOrEmpty(text.value)) {
                 cons[$(text).attr("name")] = text.value;
                 count++;

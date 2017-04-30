@@ -159,7 +159,7 @@
                     </h4>
                 </div>
                 <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                    <div class="panel-body">
+                    <div class="panel-body search">
                         <div>
                             <label class="control-label" for="address">地点:</label>
                             <input	class="form-control form-control-hack input-sm" type="text" name="address"
@@ -205,10 +205,21 @@
                         </div>
                         <hr/>
                         <div>
-                            <button class="btn btn-success btn-sm btn-block" type="button" name="search_submit" id="search_submit">
-                                <span>搜索</span>
-                                <span class="glyphicon glyphicon-search"></span>
-                            </button>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <button class="btn btn-success btn-sm btn-block" type="button" name="search_reset" id="search_reset">
+                                        <span>重置</span>
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button class="btn btn-success btn-sm btn-block" type="button" name="search_submit" id="search_submit">
+                                        <span>搜索</span>
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
