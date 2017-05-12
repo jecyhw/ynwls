@@ -16,9 +16,7 @@ import java.net.URISyntaxException;
 public final class Config extends BaseFileParse{
     static String uploadDir = "/var/gpstracks/";
     static String uploadTempDir = uploadDir;
-    static String unZipFileDir = uploadDir;
     static String zipFileDir = uploadDir;
-    static String kmzVirtualDir = "/";
 
     static {
         try {
@@ -40,16 +38,8 @@ public final class Config extends BaseFileParse{
         return zipFileDir;
     }
 
-    public static String getUnZipFileDir() {
-        return unZipFileDir;
-    }
-
     public static String getUploadTempDir() {
         return uploadTempDir;
-    }
-
-    public static String getKmzVirtualDir() {
-        return kmzVirtualDir;
     }
 
     protected Config() {
@@ -73,14 +63,8 @@ public final class Config extends BaseFileParse{
                 temp = attrs.getValue("zipFileDir");
                 zipFileDir = temp == null ? uploadDir : FileUtil.addSeparator(temp);
 
-                temp = attrs.getValue("unZipFileDir");
-                unZipFileDir = temp == null ? uploadDir : FileUtil.addSeparator(temp);
             }
 
-            temp = attrs.getValue("kmzVirtualPath");
-            if (temp != null) {
-                kmzVirtualDir = temp;
-            }
         }
     }
 

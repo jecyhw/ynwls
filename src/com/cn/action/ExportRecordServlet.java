@@ -40,10 +40,11 @@ public class ExportRecordServlet extends HttpServlet {
         String zipFileName = "";
         int isDeleted = 0;
         if (entityList.size() > 0) {
+            String kmzDirPath = FileUtil.removeLastSeparator(((TTracksEntity) entityList.get(0)).getPath());
             if (entityList.size() == 1) {
-                String tmp = ((TTracksEntity) entityList.get(0)).getPath();
-                zipFileName = FileUtil.removeLastSeparator(tmp) + ".kmz";
+                zipFileName = kmzDirPath + ".kmz";
             } else {
+                //多条轨迹合并在压缩
                 List<String> paths = new ArrayList<String>();
                 for (Object entity : entityList) {
                     String temp = FileUtil.getNestDir(((TTracksEntity) entity).getPath());
@@ -52,7 +53,7 @@ public class ExportRecordServlet extends HttpServlet {
                     }
                 }
                 String fileName = "routeRecord_" + DateUtil.date2String(new Date(), new SimpleDateFormat("yyyyMMdd_HHmmss"));//生成合并文件所在的文件名
-                String mergeFileName =  Config.getUnZipFileDir() + fileName;//完整路径，和解压kmz的文件目录一致
+                String mergeFileName =  kmzDirPath.substring(0, kmzDirPath.lastIndexOf('/') + 1) + fileName;//完整路径，和解压kmz的文件目录一致
                 try {
                     FileMerge merge = new FileMerge();
                     merge.work(paths, mergeFileName);//文件开始合并

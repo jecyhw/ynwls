@@ -26,10 +26,7 @@ public class DownloadFileService extends HttpServlet {
             File file = new File(fileName);
             if (!file.exists()) {
                 fileName = fileName.replaceFirst("^/+", "");
-                file = new File(Config.getUnZipFileDir() + fileName);
-                if (!file.exists()) {
-                    file = new File(Config.getZipFileDir() + fileName);
-                }
+                file = new File(Config.getZipFileDir() + fileName);
             }
             if (file.exists() && file.isFile()) {
                 new DownloadFile().work(response, file);

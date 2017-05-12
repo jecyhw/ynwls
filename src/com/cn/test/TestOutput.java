@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class TestOutput {
     static private String outPutFileName = System.getProperty("user.dir") + "/log.txt";
-    static private Boolean isOutPutFile = true;
+    static private Boolean isOutPutFile = false;
     static private String lineSeparator = System.getProperty("line.separator");
     static {
         File file = new File(outPutFileName);

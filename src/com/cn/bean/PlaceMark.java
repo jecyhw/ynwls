@@ -1,9 +1,11 @@
 package com.cn.bean;
 
+import com.cn.test.TestOutput;
 import com.cn.util.Config;
 import com.cn.util.File.FileUtil;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -83,10 +85,12 @@ public class PlaceMark {
             ancestorFile = ancestorFile.getParentFile();
         }
         parentName = FileUtil.addSeparator(sb.toString());
+        TestOutput.println(parentFile);
 
         desc = new ArrayList();
         Matcher matcher = descPatten.matcher(descText);
         while (matcher.find()) {
+            TestOutput.println(matcher.group(1));
             String type = matcher.group(1);
             String[] hrefArr = matcher.group(2).split(",");
             String typeDir = "";
@@ -98,9 +102,10 @@ public class PlaceMark {
                 typeDir = Config.KMZFileInfo.audioDirectoryName;
             }
             for (String href : hrefArr) {
-                String result = parentName + typeDir + href;
-                if (new File(Config.getUnZipFileDir() + result).exists()) {//判断下该文件是否存在
-                    desc.add(Config.getKmzVirtualDir() + result);//虚拟目录+父目录+当前的图片目录
+                String result = Paths.get(ancestorFile.getPath(), parentName + typeDir + href).normalize().toString();
+                TestOutput.println(result);
+                if (new File(result).exists()) {//判断下该文件是否存在
+                    desc.add(result);//虚拟目录+父目录+当前的图片目录
                 }
             }
         }
@@ -108,5 +113,14 @@ public class PlaceMark {
 
     public void setRouteStyle(RouteStyle routeStyle) {
         this.routeStyle = routeStyle;
+    }
+
+    static public void main(String[] args) {
+        Matcher matcher = descPatten.matcher("&lt;img src=\"photo/20161103_140320.jpg\"/&gt; ");
+        System.out.println("sdsds/sds".substring(0, "sdsds/sds".lastIndexOf('/') + 1));
+        while (matcher.find()) {
+            System.out.println(matcher.group(1));
+        }
+
     }
 }

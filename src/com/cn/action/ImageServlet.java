@@ -1,5 +1,6 @@
 package com.cn.action;
 
+import com.cn.test.TestOutput;
 import com.cn.util.Config;
 import com.cn.util.File.FileUtil;
 import com.cn.util.File.ResizeImage;
@@ -21,15 +22,13 @@ import java.io.IOException;
 public class ImageServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getParameter("path");
+        TestOutput.println(path);
         if (path != null) {
             path = FileUtil.replaceSeparator(path);
             int imgTypeIndex = path.indexOf('.');
             if (imgTypeIndex > 0) {
                 String imgType = path.substring(imgTypeIndex + 1);
-                if (path.startsWith(FileUtil.backslash)) {
-                    path = path.replaceFirst("^/+", "");
-                }
-                File imageFile = new File(Config.getUnZipFileDir() + path);
+                File imageFile = new File(path);
                 if (imageFile.exists()) {
                     String rootPath = imageFile.getAbsolutePath().replaceAll(Config.KMZFileInfo.photoDirectoryName + "[^/]+$", "");//替换掉photo/后的字符
                     String imageName = imageFile.getName();//图片名
@@ -46,6 +45,7 @@ public class ImageServlet extends HttpServlet {
                                     .append(imageName)
                                     .toString());
                             if (!thumbnailFile.exists()) {
+                                TestOutput.println(thumbnailFile.getAbsolutePath());
                                 File root = thumbnailFile.getParentFile();
                                 if (!root.exists()) {
                                     root.mkdirs();

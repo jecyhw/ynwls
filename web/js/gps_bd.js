@@ -17,9 +17,25 @@ function createMap(id) {
         center: new qq.maps.LatLng(39.916527,116.397128),      // 地图的中心地理坐标。
         zoom:13
     });
-    qq.maps.event.addListener(mp,'click',function(event) {
-        console.log(event);
+
+    //新建一个ImageMapType，实现ImageMapTypeOptions规范
+    var earthlayer = new qq.maps.ImageMapType({
+        name: 'tentxun',
+        alt: 'tentxun',
+        tileSize: new qq.maps.Size(256, 256),
+        minZoom: 16,
+        maxZoom: 19,
+        opacity: 1,
+        getTileUrl: function (tile, zoom) {
+            var z = zoom,
+                x = tile.x,
+                y = tile.y;
+            return 'http://159.226.15.190:8081/Maps/' + z + '/' + x + '/' + y + '.png';
+        }
     });
+
+    mp.overlayMapTypes.push(earthlayer);
+
     return mp;
 }
 
